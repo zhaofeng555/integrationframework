@@ -31,6 +31,7 @@ public class CtrlParams extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//包装数据
 		List<String> list =new ArrayList<String>();
 		list.add("hello1");
 		list.add("hello2");
