@@ -1,0 +1,6 @@
+[DEBUG][2014-07-01 11:30:26,200][com.generator.GeneratorMybatisFiles]mybator-t_user.xml开始处理
+[DEBUG][2014-07-01 11:30:26,853][org.mybatis.generator.internal.db.DatabaseIntrospector]Retrieving column information for table "t_users"
+[DEBUG][2014-07-01 11:30:26,935][org.mybatis.generator.internal.db.DatabaseIntrospector]Found column "id", data type 4, in table "test..t_users"
+[DEBUG][2014-07-01 11:30:26,935][org.mybatis.generator.internal.db.DatabaseIntrospector]Found column "username", data type 12, in table "test..t_users"
+[DEBUG][2014-07-01 11:30:26,935][org.mybatis.generator.internal.db.DatabaseIntrospector]Found column "password", data type 12, in table "test..t_users"
+[DEBUG][2014-07-01 11:30:26,999][com.generator.GeneratorMybatisFiles]mybator-t_user.xml处理结束
