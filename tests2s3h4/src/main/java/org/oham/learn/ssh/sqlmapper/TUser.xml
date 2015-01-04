@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.oham.learn.ssh.sqlmapper.TUserMapper">
+	
+	<resultMap type="TUser" id="resultMap">
+		<result property="id" column="ID"/> 
+		<result property="name" column="NAME"/> 
+		<result property="resume" column="RESUME"/> 
+	</resultMap>
+	
+	<sql id="tuser_colunms">
+		id, name, resume
+	</sql>
+	
+	<select id="selectTUserByExample" parameterType="TUser" resultMap="resultMap">
+		SELECT 
+			<include refid="tuser_colunms"/>
+		FROM t_user
+		<trim prefix="WHERE" prefixOverrides="AND |OR ">
+			<if test="id != null">
+				AND id = #{id} 
+			</if>
+			<if test="name != null and name != ''">
+				AND name = #{name} 
+			</if>
+			<if test="resume != null and resume !=''">
+				AND resume = #{resume} 
+			</if>
+		</trim>
+	</select>
+	
+</mapper>

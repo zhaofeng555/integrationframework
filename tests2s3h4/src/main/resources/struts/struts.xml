@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC  
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"  
+    "http://struts.apache.org/dtds/struts-2.0.dtd">  
+<struts>  
+
+ 	<!-- 开启使用开发模式，详细错误提示 -->  
+    <constant name="struts.devMode" value="true" />
+    
+  	<!-- 指定每次配置文件更改后，自动重新加载 -->  
+    <constant name="struts.configuration.xml.reload" value="true" />
+      
+    <!-- 将对象交给spring管理 -->  
+<!--   <constant name="struts.objectFactory" value="spring" />-->
+   
+    <!-- 指定资源编码类型 -->  
+    <constant name="struts.i18n.encoding" value="UTF-8" />
+      
+    <!-- 指定struts-convention插件的action扫描路径，不然注解了的action不起作用，此处我尝试使用
+    	struts的注解形式的action配置
+     -->  
+    <constant name="struts.convention.action.packages" value="org.oham.learn.ssh.controllers" />
+     
+     <!-- 配置注解action默认的result视图文件路径 -->
+<!--    <constant name="struts.convention.result.path" value="/WEB-INF/jsp" />-->
+
+
+
+	<!-- 默认的package，此处只搞了个json的 -->
+	<package name="ssh-default" namespace="/" extends="struts-default">
+		<result-types>
+			<result-type name="json" class="org.apache.struts2.json.JSONResult"/>
+		</result-types>
+		<interceptors>
+			<interceptor name="json" class="org.apache.struts2.json.JSONInterceptor"/>
+		</interceptors>
+	</package>
+	
+	<!-- 传统的以xml的形式注册了action，注意action的class，是spring bean的id -->
+  	<package name="testStruts" namespace="/struts" extends="ssh-default">  
+        <action name="testCall" method="testCall" class="testStrutsAction">  
+            <result name="success">/WEB-INF/jsp/Main.jsp</result>  
+            <result name="json" type="json"/>  
+        </action>  
+        <action name="testAnnotationCall" method="testAnnotationCall" class="testStrutsAction">  
+            <result name="success">/WEB-INF/jsp/Main.jsp</result>  
+        </action>  
+    </package>  
+
+  
+</struts>   
