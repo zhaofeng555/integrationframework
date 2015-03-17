@@ -3,6 +3,7 @@ package hjg.testJedis;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import redis.clients.jedis.Jedis;
@@ -37,27 +38,63 @@ public class RedisClient {
 	public static void main(String[] args) {
 		RedisClient client = new RedisClient();
 		client.initRes();
+		
+//		client.HashOperate();
+//		client.ListOperate();
+//		client.SetOperate();
+//		
+//		client.test1();
+		client.test2();
+//		
 //		client.show();
-		client.test3();
+//		client.test3();
 		client.releaseRes();
 	}
 
 	void test1() {
 		Jedis jedis = new Jedis("127.0.0.1", 6379);
-		jedis.auth("wobushini");
-		System.out.println(jedis.get("hello"));
+//		jedis.auth("ChineseAll*()");
+//		
+//		if(jedis.exists("haojg")){
+//			jedis.incr("haojg");
+//		}else{
+//			jedis.setex("haojg", 10, "0");
+//		}
+//		System.out.println(jedis.get("haojg"));
+//		
+//		 jedis.zadd("hackers", 1, "1");
+//		 jedis.zadd("hackers", 3, "2");
+//		 jedis.zadd("hackers", 2, "3");
+//		 jedis.zadd("hackers", 2, "4");
+//		 Set stringSet = jedis.zrange("hackers", 0, -1);//第一个到最后一个
+//		 System.out.println(stringSet);
+//		 
+//		 jedis.rpush("top", "1");
+//		 jedis.rpush("top", "3");
+//		 jedis.rpush("top", "2");
+//		 
+//		 List listSort = jedis.sort("top");
+//		 System.out.println(listSort);
+		
 	}
 
 	void test2() {
 		RedisClient c = new RedisClient();
 
 		Jedis jedis = c.jedisPool.getResource();
-		System.out.println(jedis.get("hello"));
+
+		jedis.hset("hello", "1", "w1");
+		jedis.hset("hello", "2", "w2");
+		jedis.hset("hello", "3", "w3");
+		
+		
+		
+		Map<String, String> m = jedis.hgetAll("hello");
+		
+		System.out.println(m);
+		
 		c.jedisPool.returnResource(jedis);
 
-		ShardedJedis shardedJedis = c.shardedJedisPool.getResource();
-		System.out.println(shardedJedis.get("hello"));
-		c.shardedJedisPool.returnResource(shardedJedis);
 	}
 
 	//保存，获取大对象
@@ -97,13 +134,12 @@ public class RedisClient {
 	private void initialPool() {
 		// 池基本配置
 		JedisPoolConfig config = new JedisPoolConfig();
-		config.setMaxActive(20);
+		config.setMaxTotal(20);
 		config.setMaxIdle(5);
-		config.setMaxWait(1000l);
+		config.setMaxWaitMillis(1000l);
 		config.setTestOnBorrow(false);
-		// jedisPool = new JedisPool(config,"127.0.0.1",6379);
-		jedisPool = new JedisPool(config, "127.0.0.1", 6379, 1000, "wobushini");
-
+//		jedisPool = new JedisPool(config, "127.0.0.1", 6379, 1000, "ChineseAll*()");
+		jedisPool = new JedisPool(config, "127.0.0.1", 6379, 1000);
 	}
 
 	/**
@@ -112,15 +148,16 @@ public class RedisClient {
 	private void initialShardedPool() {
 		// 池基本配置
 		JedisPoolConfig config = new JedisPoolConfig();
-		config.setMaxActive(20);
+		config.setMaxTotal(20);
 		config.setMaxIdle(5);
-		config.setMaxWait(1000l);
+		config.setMaxWaitMillis(1000l);
 		config.setTestOnBorrow(false);
+		
 
 		// slave链接
 		List<JedisShardInfo> shards = new ArrayList<JedisShardInfo>();
 		JedisShardInfo info = new JedisShardInfo("127.0.0.1", 6379, "master");
-		info.setPassword("wobushini");
+//		info.setPassword("ChineseAll*()");
 		shards.add(info);
 
 		// 构造池
@@ -276,6 +313,7 @@ public class RedisClient {
 		shardedJedis.lpush("stringlists", "HashList");
 		shardedJedis.lpush("numberlists", "3");
 		shardedJedis.lpush("numberlists", "1");
+		shardedJedis.lpush("numberlists", "1");
 		shardedJedis.lpush("numberlists", "5");
 		shardedJedis.lpush("numberlists", "2");
 		System.out.println("所有元素-stringlists："
@@ -346,6 +384,8 @@ public class RedisClient {
 				+ jedis.sadd("sets", "element003"));
 		System.out.println("向sets集合中加入元素element004："
 				+ jedis.sadd("sets", "element004"));
+		System.out.println("向sets集合中加入元素element004："
+				+ jedis.sadd("sets", "element004"));
 		System.out.println("查看sets集合中的所有元素:" + jedis.smembers("sets"));
 		System.out.println();
 
@@ -384,8 +424,6 @@ public class RedisClient {
 				+ jedis.sadd("sets1", "element003"));
 		System.out.println("sets1中添加元素element002："
 				+ jedis.sadd("sets2", "element002"));
-		System.out.println("sets1中添加元素element003："
-				+ jedis.sadd("sets2", "element003"));
 		System.out.println("sets1中添加元素element004："
 				+ jedis.sadd("sets2", "element004"));
 		System.out.println("查看sets1集合中的所有元素:" + jedis.smembers("sets1"));
